@@ -28,14 +28,14 @@ export function MobileNavigation({
     };
   }, [isOpen]);
 
+  if (!isOpen) return null;
+
   return (
     <div
       role="dialog"
       aria-modal="true"
       aria-label="Navigation Menu"
-      className={`fixed inset-0 z-50 transition-visibility duration-300 ${
-        isOpen ? "pointer-events-auto visible" : "pointer-events-none invisible"
-      }`}
+      className="fixed inset-0 z-50 pointer-events-auto visible"
     >
       {/* Backdrop */}
       <div
