@@ -4,8 +4,9 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { ShoppingBag, Menu } from "lucide-react";
+import { ShoppingBag, Menu, Heart } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { useCart } from "@/context/CartContext";
 import { MobileNavigation } from "./MobileNavigation";
 
 const NAV_LINKS = [
@@ -18,14 +19,17 @@ const NAV_LINKS = [
 interface HeroNavigationProps {
   isVisible: boolean;
   prefersReducedMotion: boolean;
+  onOpenWishlist?: () => void;
 }
 
 export function HeroNavigation({
   isVisible,
   prefersReducedMotion,
+  onOpenWishlist,
 }: HeroNavigationProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { totalItems, wishlist, setIsCartOpen, cartPulse } = useCart();
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -70,34 +74,69 @@ export function HeroNavigation({
             </div>
           </Link>
 
-          {/* Desktop Nav Links Centered */}
+          {/* Desktop Nav Links Centered: Exactly matching Screenshot [DROPS  COLLECTIONS  LOOKBOOK  ABOUT] */}
           <nav
             aria-label="Primary"
-            className="hidden md:flex items-center space-x-9 lg:space-x-12"
+            className="hidden md:flex items-center space-x-10 lg:space-x-14"
           >
             {NAV_LINKS.map((link) => (
-              <Link
+              <a
                 key={link.name}
                 href={link.href}
-                className="group relative font-sans text-xs uppercase tracking-[0.25em] text-bone/90 transition-colors hover:text-bone"
+                className="group relative font-sans text-xs uppercase tracking-[0.28em] text-bone/90 transition-colors hover:text-bone"
               >
                 <span>{link.name}</span>
-                {/* Underline accent on hover */}
                 <span className="absolute -bottom-1 left-0 h-px w-0 bg-red transition-all duration-300 group-hover:w-full" />
-              </Link>
+              </a>
             ))}
           </nav>
 
-          {/* Right Action Icons */}
-          <div className="flex items-center space-x-5 sm:space-x-6">
+          {/* Right Action Icons: Wishlist, Shopping Bag, Mobile Menu */}
+          <div className="flex items-center space-x-4 sm:space-x-6">
+            {/* Wishlist Button */}
             <button
               type="button"
-              aria-label="Shopping Bag (0 items)"
+              onClick={onOpenWishlist}
+              aria-label={`Wishlist (${wishlist.length} items)`}
               className="group relative p-2 text-bone transition-colors hover:text-red-bright focus-visible:outline-none"
             >
-              <ShoppingBag className="size-5 transition-transform group-hover:scale-105" strokeWidth={1.5} />
-              <span className="absolute top-1 right-0.5 flex size-3.5 items-center justify-center rounded-full bg-red text-[9px] font-bold text-bone">
-                0
+              <Heart
+                className={`size-4 sm:size-5 transition-transform group-hover:scale-105 ${
+                  wishlist.length > 0 ? "fill-red text-red" : ""
+                }`}
+                strokeWidth={1.5}
+              />
+              {wishlist.length > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 flex size-3.5 items-center justify-center rounded-full bg-red text-[8px] font-bold text-bone">
+                  {wishlist.length}
+                </span>
+              )}
+            </button>
+
+            {/* Shopping Bag Icon Button with Crimson Pulse animation */}
+            <button
+              id="header-cart-icon"
+              type="button"
+              onClick={() => setIsCartOpen(true)}
+              aria-label={`Open shopping bag, ${totalItems} items`}
+              className={`group relative p-2 text-bone transition-all duration-300 focus-visible:outline-none ${
+                cartPulse ? "scale-125 text-red-bright" : "hover:text-red-bright"
+              }`}
+            >
+              {cartPulse && (
+                <span className="absolute inset-0 rounded-full bg-red/40 animate-ping" />
+              )}
+              <ShoppingBag
+                className="size-5 transition-transform group-hover:scale-105"
+                strokeWidth={1.5}
+              />
+              <span
+                aria-hidden="true"
+                className={`absolute top-1 right-0.5 flex size-3.5 items-center justify-center rounded-full text-[9px] font-bold text-bone transition-colors ${
+                  cartPulse ? "bg-red-bright scale-110" : "bg-red"
+                }`}
+              >
+                {totalItems}
               </span>
             </button>
 
@@ -123,4 +162,3 @@ export function HeroNavigation({
     </>
   );
 }
-

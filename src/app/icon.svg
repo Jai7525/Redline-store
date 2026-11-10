@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Deep Black Circular/Curved Background -->
+  <circle cx="64" cy="64" r="62" fill="#080808" />
+  <circle cx="64" cy="64" r="60" fill="none" stroke="#222222" stroke-width="2" />
+  
+  <!-- Subtle Crimson Ring Accent -->
+  <circle cx="64" cy="64" r="54" fill="none" stroke="#C8102E" stroke-width="1.5" stroke-dasharray="16 8" opacity="0.4" />
+
+  <!-- RL Monogram in Luxury Gothic Display Style -->
+  <text x="63" y="78" 
+        font-family="-apple-system, BlinkMacSystemFont, 'Cinzel', 'Cinzel Decorative', 'Georgia', serif" 
+        font-size="52" 
+        font-weight="900" 
+        letter-spacing="2"
+        fill="#F2EEE8" 
+        text-anchor="middle"
+        style="text-transform: uppercase;">
+    RL
+  </text>
+  
+  <!-- Crimson Signature Accent Dot -->
+  <circle cx="94" cy="74" r="4" fill="#C8102E" />
+</svg>
+

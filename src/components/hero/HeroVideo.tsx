@@ -9,7 +9,6 @@ import {
   forwardRef,
 } from "react";
 import Image from "next/image";
-import { Volume2, VolumeX } from "lucide-react";
 
 export interface HeroVideoHandle {
   transitionToLoop: () => void;
@@ -28,8 +27,6 @@ export const HeroVideo = forwardRef<HeroVideoHandle, HeroVideoProps>(
   ) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [hasError, setHasError] = useState(false);
-    const [isMuted, setIsMuted] = useState(true);
-    const [canToggleAudio, setCanToggleAudio] = useState(false);
     const [overlayFading, setOverlayFading] = useState(false);
     const openingEndedRef = useRef(false);
 
@@ -38,9 +35,8 @@ export const HeroVideo = forwardRef<HeroVideoHandle, HeroVideoProps>(
       const video = videoRef.current;
       if (!video) return;
 
-      // 1. Immediately mute before resetting
+      // 1. Keep permanently muted
       video.muted = true;
-      setIsMuted(true);
 
       // 2. Enable continuous looping
       video.loop = true;
@@ -81,11 +77,10 @@ export const HeroVideo = forwardRef<HeroVideoHandle, HeroVideoProps>(
       const video = videoRef.current;
       if (!video) return;
 
-      // Ensure every page load starts from 0:00 without loop in Phase 1
+      // Ensure every page load starts from 0:00 without loop in Phase 1 and permanently muted
       video.currentTime = 0;
       video.loop = false;
       video.muted = true;
-      setIsMuted(true);
 
       video.addEventListener("ended", handleEnded);
 
@@ -97,14 +92,9 @@ export const HeroVideo = forwardRef<HeroVideoHandle, HeroVideoProps>(
 
       const playPromise = video.play();
       if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            setCanToggleAudio(true);
-          })
-          .catch(() => {
-            // Autoplay blocked policy handling
-            setCanToggleAudio(true);
-          });
+        playPromise.catch(() => {
+          // Handled gracefully
+        });
       }
 
       return () => {
@@ -113,21 +103,11 @@ export const HeroVideo = forwardRef<HeroVideoHandle, HeroVideoProps>(
       };
     }, [handleEnded]);
 
-    const toggleSound = () => {
-      const video = videoRef.current;
-      if (!video) return;
-
-      // Directly toggle HTML video element muted property
-      const nextMuted = !video.muted;
-      video.muted = nextMuted;
-      setIsMuted(nextMuted);
-    };
-
     const isDarkOverlayActive = isBackgroundMode || overlayFading;
 
     return (
       <div className="absolute inset-0 size-full overflow-hidden bg-background">
-        {/* Continuous Single Video Element */}
+        {/* Continuous Single Video Element - permanently muted */}
         {!hasError ? (
           <video
             ref={videoRef}
@@ -135,7 +115,8 @@ export const HeroVideo = forwardRef<HeroVideoHandle, HeroVideoProps>(
             autoPlay
             muted
             playsInline
-            preload="auto"
+            preload="metadata"
+            poster="/images/logo/redline-logo.png"
             aria-label="REDLINE Hero Video"
             className="size-full object-cover object-center select-none"
           />
@@ -149,28 +130,6 @@ export const HeroVideo = forwardRef<HeroVideoHandle, HeroVideoProps>(
               className="object-contain p-12 opacity-25 filter grayscale"
             />
           </div>
-        )}
-
-        {/* Phase 1 Sound Toggle (Visible only during opening film) */}
-        {!isDarkOverlayActive && canToggleAudio && !hasError && (
-          <button
-            type="button"
-            onClick={toggleSound}
-            aria-label={isMuted ? "Unmute audio" : "Mute audio"}
-            className="fixed bottom-8 left-8 z-50 flex items-center gap-2.5 border border-bone/20 bg-background/60 px-3.5 py-2 text-[11px] font-medium uppercase tracking-[0.22em] text-bone/80 backdrop-blur-md transition-all duration-300 hover:border-red hover:bg-background/90 hover:text-bone focus-visible:outline-none focus-visible:border-red"
-          >
-            {isMuted ? (
-              <>
-                <VolumeX className="size-3.5 text-muted" strokeWidth={1.5} />
-                <span>Sound: Off</span>
-              </>
-            ) : (
-              <>
-                <Volume2 className="size-3.5 text-red-bright animate-pulse" strokeWidth={1.5} />
-                <span className="text-bone">Sound: On</span>
-              </>
-            )}
-          </button>
         )}
 
         {/* Phase 2 Dark Black Overlay:
