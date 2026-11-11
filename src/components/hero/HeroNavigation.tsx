@@ -64,7 +64,7 @@ export function HeroNavigation({
           >
             <div className="relative h-7 w-32 sm:h-8 sm:w-36 lg:h-9 lg:w-40">
               <Image
-                src="/images/logo/redline-logo.png"
+                src="/images/logo/redline-logo.webp"
                 alt="REDLINE"
                 fill
                 sizes="(max-width: 640px) 128px, (max-width: 1024px) 144px, 160px"

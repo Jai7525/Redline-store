@@ -70,7 +70,7 @@ export function Footer({ onSelectCategory }: FooterProps) {
             >
               <div className="relative h-8 w-36 sm:h-9 sm:w-40 lg:h-10 lg:w-44">
                 <Image
-                  src="/images/logo/redline-logo.png"
+                  src="/images/logo/redline-logo.webp"
                   alt="REDLINE"
                   fill
                   sizes="(max-width: 640px) 144px, 176px"

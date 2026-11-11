@@ -22,7 +22,7 @@ interface HeroVideoProps {
 
 export const HeroVideo = forwardRef<HeroVideoHandle, HeroVideoProps>(
   function HeroVideo(
-    { onOpeningEnded, isBackgroundMode, posterSrc = "/REDLINE_Logo.png" },
+    { onOpeningEnded, isBackgroundMode, posterSrc = "/REDLINE_Logo.webp" },
     ref
   ) {
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -116,7 +116,7 @@ export const HeroVideo = forwardRef<HeroVideoHandle, HeroVideoProps>(
             muted
             playsInline
             preload="metadata"
-            poster="/images/logo/redline-logo.png"
+            poster="/images/logo/redline-logo-poster.webp"
             aria-label="REDLINE Hero Video"
             className="size-full object-cover object-center select-none"
           />

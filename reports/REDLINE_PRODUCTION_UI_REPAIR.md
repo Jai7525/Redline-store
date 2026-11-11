@@ -69,3 +69,4 @@ Evaluated across all 5 standard viewport profiles on the production build:
 | **Automated E2E Suite** | `npx playwright test` | **10 / 10 passed (51.9s)** |
 | **Accessibility (axe-core)**| Playwright AxeBuilder | **0 violations (WCAG 2.1 AA)** |
 | **Asset Audit Report** | `reports/REDLINE_ASSET_AUDIT.md` | **Verified & logged** |
+
