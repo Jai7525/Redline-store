@@ -89,14 +89,14 @@ export function QuickViewModal({ product, onClose }: QuickViewModalProps) {
         />
 
         {/* Modal Dialog Box */}
-        <div className="relative z-10 w-full max-w-4xl overflow-hidden border border-line bg-surface p-6 sm:p-8 md:p-10 shadow-2xl backdrop-blur-2xl">
+        <div className="relative z-10 flex max-h-[88dvh] w-full max-w-4xl flex-col overflow-y-auto border border-line bg-surface p-5 sm:p-7 md:max-h-[85vh] md:p-10 shadow-2xl backdrop-blur-2xl scrollbar-thin scrollbar-thumb-line/50">
           {/* Top Right Actions: Wishlist + Close */}
-          <div className="absolute right-5 top-5 z-20 flex items-center gap-3">
+          <div className="sticky top-0 z-30 -mr-2 -mt-2 mb-2 flex items-center justify-end gap-2 self-end rounded-full bg-surface/80 p-1.5 backdrop-blur-md md:absolute md:right-5 md:top-5 md:m-0">
             <button
               type="button"
               onClick={() => toggleWishlist(product.id)}
               aria-label="Wishlist toggle"
-              className="p-1 text-muted transition-colors hover:text-red-bright"
+              className="p-1.5 text-muted transition-colors hover:text-red-bright"
             >
               <Heart
                 className={`size-5 transition-transform hover:scale-110 ${
@@ -109,16 +109,16 @@ export function QuickViewModal({ product, onClose }: QuickViewModalProps) {
               type="button"
               onClick={onClose}
               aria-label="Close modal"
-              className="p-1 text-muted transition-colors hover:text-bone focus-visible:outline-none"
+              className="p-1.5 text-muted transition-colors hover:text-bone focus-visible:outline-none"
             >
               <X className="size-5" strokeWidth={1.5} />
             </button>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-10">
             {/* Left: Product Image Stage */}
             <div className="flex flex-col gap-3">
-              <div className="group relative aspect-[3/4] w-full overflow-hidden border border-line/40 bg-background">
+              <div className="group relative aspect-square w-full max-h-[38vh] overflow-hidden border border-line/40 bg-background sm:max-h-[44vh] md:aspect-[3/4] md:max-h-none">
                 {currentImage && (
                   <Image
                     src={currentImage}
@@ -149,22 +149,22 @@ export function QuickViewModal({ product, onClose }: QuickViewModalProps) {
             {/* Right: Product Detail Column */}
             <div className="flex flex-col justify-between py-1">
               <div>
-                <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-red-bright">
+                <p className="text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.28em] text-red-bright">
                   {product.label}
                 </p>
 
                 <h2
                   id="quick-view-title"
-                  className="mt-2 font-display text-2xl uppercase tracking-[0.1em] text-bone sm:text-3xl lg:text-4xl"
+                  className="mt-1.5 font-display text-xl sm:text-2xl md:text-3xl uppercase tracking-[0.1em] text-bone lg:text-4xl"
                 >
                   {product.name}
                 </h2>
 
-                <p className="mt-2 font-sans text-lg font-light tracking-[0.12em] text-bone sm:text-xl">
+                <p className="mt-1.5 font-sans text-base sm:text-lg font-light tracking-[0.12em] text-bone md:text-xl">
                   ₹{product.price.toLocaleString("en-IN")}
                 </p>
 
-                <div className="my-5 h-px w-full bg-line/60" />
+                <div className="my-3 sm:my-5 h-px w-full bg-line/60" />
 
                 <p className="text-xs font-light leading-relaxed tracking-[0.04em] text-bone/80 sm:text-sm">
                   {product.description}
@@ -172,7 +172,7 @@ export function QuickViewModal({ product, onClose }: QuickViewModalProps) {
 
                 {/* Color Selector if available */}
                 {product.colors && product.colors.length > 1 && (
-                  <div className="mt-5">
+                  <div className="mt-4 sm:mt-5">
                     <p className="text-[10px] uppercase tracking-[0.22em] text-muted">
                       Colour: <span className="text-bone">{selectedColor}</span>
                     </p>
@@ -196,7 +196,7 @@ export function QuickViewModal({ product, onClose }: QuickViewModalProps) {
                 )}
 
                 {/* Size Selection */}
-                <div className="mt-6">
+                <div className="mt-4 sm:mt-6">
                   <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.2em] text-muted">
                     <span className="flex items-center gap-2">
                       <span>Select Size</span>
@@ -237,7 +237,7 @@ export function QuickViewModal({ product, onClose }: QuickViewModalProps) {
                 </div>
 
                 {/* Quantity */}
-                <div className="mt-5 flex items-center gap-4">
+                <div className="mt-4 sm:mt-5 flex items-center gap-4">
                   <span className="text-[11px] uppercase tracking-[0.2em] text-muted">
                     Quantity
                   </span>
@@ -262,7 +262,7 @@ export function QuickViewModal({ product, onClose }: QuickViewModalProps) {
               </div>
 
               {/* Actions */}
-              <div className="mt-8 flex flex-col gap-3">
+              <div className="mt-6 sm:mt-8 flex flex-col gap-3">
                 <Button
                   variant="primary"
                   size="md"
